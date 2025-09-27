@@ -1,0 +1,23 @@
+name: DamageIndicators
+main: com.lightre.damageindicators.DamageIndicators
+version: '${version}' # This will be replaced by the version in build.gradle
+api-version: '1.21'
+authors: [ Lightre, Fists ]
+description: Displays damage indicators.
+
+commands:
+  di:
+    description: Main command for DamageIndicators.
+    usage: /<command> <help|toggle|reload>
+    aliases: [damageindicator]
+
+permissions:
+  damageindicators.help:
+    description: Allows viewing the plugin's help message.
+    default: true
+  damageindicators.toggle:
+    description: Allows toggling the damage indicators.
+    default: true
+  damageindicators.reload:
+    description: Allows reloading the config file.
+    default: op
