@@ -90,3 +90,5 @@ public final class EntityDamage implements Listener {
         });
     }
 }
+
+// Developed by Lightre

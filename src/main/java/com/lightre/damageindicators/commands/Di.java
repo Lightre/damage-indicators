@@ -132,3 +132,5 @@ public final class Di implements CommandExecutor, TabCompleter {
         return new ArrayList<>();
     }
 }
+
+// Developed by Lightre

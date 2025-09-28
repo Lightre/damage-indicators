@@ -93,3 +93,5 @@ public final class DamageIndicators extends JavaPlugin {
     public long getIndicatorDurationTicks() { return indicatorDurationTicks; }
     public List<String> getDisabledWorldsList() { return disabledWorldsList; }
 }
+
+// Developed by Lightre
