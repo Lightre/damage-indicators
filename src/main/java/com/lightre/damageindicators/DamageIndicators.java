@@ -19,20 +19,34 @@ public final class DamageIndicators extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
+        // This is the correct and safe way to initialize the config.
+        // It copies the default config from the JAR if config.yml does not exist.
+        // If it already exists, it does NOTHING, preserving user changes and comments.
+        this.saveDefaultConfig();
+
+        // Load values from the file on disk.
         loadConfigValues();
+        // Register commands.
         getCommand("di").setExecutor(new Di(this));
     }
 
+    /**
+     * Reloads the configuration from the disk and applies the new settings.
+     */
     public void reloadConfiguration() {
         reloadConfig();
         loadConfigValues();
     }
 
+    /**
+     * Loads all settings from the config.yml file and applies them to the plugin.
+     */
     private void loadConfigValues() {
+        // Unregister any previous listeners to prevent duplicates on reload.
         HandlerList.unregisterAll(this);
         this.indicatorsEnabled = getConfig().getBoolean("enabled");
 
+        // Only register the damage listener if the feature is enabled in the config.
         if (this.indicatorsEnabled) {
             getServer().getPluginManager().registerEvents(new EntityDamage(this), this);
             getLogger().info("Indicators are ENABLED. Listener registered.");
@@ -40,10 +54,12 @@ public final class DamageIndicators extends JavaPlugin {
             getLogger().info("Indicators are DISABLED in config.yml. Listener not registered.");
         }
 
+        // Read values from config. The second argument is a default value used if the key is missing.
         this.indicatorPrefix = getConfig().getString("indicator-prefix", "&c- ");
         double durationInSeconds = getConfig().getDouble("indicator-duration-seconds", 1.5);
         this.indicatorDurationTicks = (long) (durationInSeconds * 20);
 
+        // Load and validate the list of disabled worlds.
         this.disabledWorldsList = new ArrayList<>();
         List<String> rawListFromConfig = getConfig().getStringList("disabled-worlds");
         for (String worldName : rawListFromConfig) {
@@ -55,9 +71,8 @@ public final class DamageIndicators extends JavaPlugin {
         }
     }
 
+    // Getter methods for other classes to access loaded values.
     public String getIndicatorPrefix() { return indicatorPrefix; }
     public long getIndicatorDurationTicks() { return indicatorDurationTicks; }
     public List<String> getDisabledWorldsList() { return disabledWorldsList; }
 }
-
-// Developed by Lightre

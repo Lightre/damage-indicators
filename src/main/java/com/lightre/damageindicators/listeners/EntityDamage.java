@@ -24,6 +24,7 @@ public final class EntityDamage implements Listener {
 
     @EventHandler
     public void onEntityDamageEvent(EntityDamageEvent event) {
+        // Perform initial checks to see if we should create an indicator.
         String worldName = event.getEntity().getWorld().getName().toLowerCase();
         if (plugin.getDisabledWorldsList().contains(worldName) || event.getFinalDamage() < 0.1) {
             return;
@@ -33,10 +34,12 @@ public final class EntityDamage implements Listener {
         double damage = event.getFinalDamage();
         String formattedDamage = String.format("%.1f", damage);
         long durationInTicks = plugin.getIndicatorDurationTicks();
-        String prefix = plugin.getIndicatorPrefix();
+        String prefix = plugin.getIndicatorPrefix(); // Get the one and only prefix.
         Location baseLocation;
 
+        // Determine the base location based on the damage source.
         if (event instanceof EntityDamageByEntityEvent entityEvent) {
+            // For damage from entities, calculate direction for better placement.
             Entity damager = entityEvent.getDamager();
             if (damager instanceof Projectile projectile && projectile.getShooter() instanceof Entity shooter) {
                 damager = shooter;
@@ -46,6 +49,7 @@ public final class EntityDamage implements Listener {
                     .add(0, victim.getHeight() / 2, 0)
                     .add(direction.multiply(-0.8));
         } else {
+            // For environmental damage, use a random location around the victim.
             baseLocation = victim.getLocation().add(
                     ThreadLocalRandom.current().nextDouble(-1.0, 1.0),
                     0.5 + ThreadLocalRandom.current().nextDouble(0.0, 1.0),
@@ -53,6 +57,7 @@ public final class EntityDamage implements Listener {
             );
         }
 
+        // Add a slight random offset to prevent indicators from perfectly overlapping.
         double spread = 0.5;
         Location finalSpawnLocation = baseLocation.add(
                 ThreadLocalRandom.current().nextDouble(-spread, spread),
@@ -60,20 +65,22 @@ public final class EntityDamage implements Listener {
                 ThreadLocalRandom.current().nextDouble(-spread, spread)
         );
 
+        // Spawn and configure the ArmorStand as the indicator.
         victim.getWorld().spawn(finalSpawnLocation, ArmorStand.class, armorStand -> {
+            // Make the ArmorStand completely invisible and non-interactive.
             armorStand.setVisible(false);
             armorStand.setGravity(false);
-            armorStand.setMarker(true);
-            armorStand.setSmall(true);
+            armorStand.setMarker(true); // Removes hitbox.
+            armorStand.setSmall(true); // Makes the text appear smaller and cleaner.
             armorStand.setInvulnerable(true);
 
+            // Set the damage text as its custom name.
             String damageText = ChatColor.translateAlternateColorCodes('&', prefix + formattedDamage);
             armorStand.setCustomName(damageText);
             armorStand.setCustomNameVisible(true);
 
+            // Schedule the ArmorStand to be removed after the configured duration.
             plugin.getServer().getScheduler().runTaskLater(plugin, armorStand::remove, durationInTicks);
         });
     }
 }
-
-// Developed by Lightre
