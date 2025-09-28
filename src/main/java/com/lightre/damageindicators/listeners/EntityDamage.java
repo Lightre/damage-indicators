@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+// YENİ: METADATA İÇİN GEREKLİ IMPORT'LAR
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -67,6 +69,10 @@ public final class EntityDamage implements Listener {
 
         // Spawn and configure the ArmorStand as the indicator.
         victim.getWorld().spawn(finalSpawnLocation, ArmorStand.class, armorStand -> {
+            // YENİ: ARMORSTAND'E ÖZEL KİMLİĞİMİZİ VERİYORUZ.
+            // Bu, onu sunucudaki diğer tüm ArmorStand'lerden ayırmamızı sağlar.
+            armorStand.setMetadata(DamageIndicators.INDICATOR_METADATA_KEY, new FixedMetadataValue(plugin, true));
+
             // Make the ArmorStand completely invisible and non-interactive.
             armorStand.setVisible(false);
             armorStand.setGravity(false);

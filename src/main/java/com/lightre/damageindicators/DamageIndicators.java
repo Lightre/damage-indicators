@@ -2,6 +2,8 @@ package com.lightre.damageindicators;
 
 import com.lightre.damageindicators.commands.Di;
 import com.lightre.damageindicators.listeners.EntityDamage;
+import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,6 +13,8 @@ import java.util.regex.Pattern;
 
 public final class DamageIndicators extends JavaPlugin {
 
+    public static final String INDICATOR_METADATA_KEY = "damageindicators.indicator";
+
     private boolean indicatorsEnabled;
     private String indicatorPrefix;
     private long indicatorDurationTicks;
@@ -19,15 +23,31 @@ public final class DamageIndicators extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // This is the correct and safe way to initialize the config.
-        // It copies the default config from the JAR if config.yml does not exist.
-        // If it already exists, it does NOTHING, preserving user changes and comments.
+        cleanupLingeringIndicators();
+
         this.saveDefaultConfig();
 
-        // Load values from the file on disk.
         loadConfigValues();
-        // Register commands.
         getCommand("di").setExecutor(new Di(this));
+    }
+
+    private void cleanupLingeringIndicators() {
+        int removedCount = 0;
+        // Get all loaded worlds on the server.
+        for (World world : getServer().getWorlds()) {
+            // Check every ArmorStand in the world.
+            for (ArmorStand armorStand : world.getEntitiesByClass(ArmorStand.class)) {
+                // If the ArmorStand has our specific metadata key...
+                if (armorStand.hasMetadata(INDICATOR_METADATA_KEY)) {
+                    // ...remove it.
+                    armorStand.remove();
+                    removedCount++;
+                }
+            }
+        }
+        if (removedCount > 0) {
+            getLogger().info("Removed " + removedCount + " lingering damage indicators from previous sessions.");
+        }
     }
 
     /**
@@ -42,11 +62,9 @@ public final class DamageIndicators extends JavaPlugin {
      * Loads all settings from the config.yml file and applies them to the plugin.
      */
     private void loadConfigValues() {
-        // Unregister any previous listeners to prevent duplicates on reload.
         HandlerList.unregisterAll(this);
         this.indicatorsEnabled = getConfig().getBoolean("enabled");
 
-        // Only register the damage listener if the feature is enabled in the config.
         if (this.indicatorsEnabled) {
             getServer().getPluginManager().registerEvents(new EntityDamage(this), this);
             getLogger().info("Indicators are ENABLED. Listener registered.");
@@ -54,7 +72,6 @@ public final class DamageIndicators extends JavaPlugin {
             getLogger().info("Indicators are DISABLED in config.yml. Listener not registered.");
         }
 
-        // Read values from config. The second argument is a default value used if the key is missing.
         this.indicatorPrefix = getConfig().getString("indicator-prefix", "&c♥ ");
         double durationInSeconds = getConfig().getDouble("indicator-duration-seconds", 1.5);
         this.indicatorDurationTicks = (long) (durationInSeconds * 20);

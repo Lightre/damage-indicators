@@ -21,3 +21,6 @@ permissions:
   damageindicators.reload:
     description: Allows reloading the config file.
     default: op
+  damageindicators.kill:
+    description: Allows removing all active damage indicators from the server.
+    default: op
