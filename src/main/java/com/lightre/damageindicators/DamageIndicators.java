@@ -55,7 +55,7 @@ public final class DamageIndicators extends JavaPlugin {
         }
 
         // Read values from config. The second argument is a default value used if the key is missing.
-        this.indicatorPrefix = getConfig().getString("indicator-prefix", "&c- ");
+        this.indicatorPrefix = getConfig().getString("indicator-prefix", "&c♥ ");
         double durationInSeconds = getConfig().getDouble("indicator-duration-seconds", 1.5);
         this.indicatorDurationTicks = (long) (durationInSeconds * 20);
 

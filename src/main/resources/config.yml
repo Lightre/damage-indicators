@@ -8,10 +8,10 @@
 enabled: true
 
 # Text to appear at the beginning of the damage indicator.
-# You can use color codes with '&' (e.g., &c = Red, &7 = Gray).
-indicator-prefix: '&c- '
+# You can use color codes with '&' (default: '&c♥ ')
+indicator-prefix: '&c♥ '
 
-# Time the damage indicator stays on screen (in seconds).
+# Time the damage indicator stays on screen (default: 1.5)
 indicator-duration-seconds: 1.5
 
 # World Blacklist
