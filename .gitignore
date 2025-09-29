@@ -9,6 +9,6 @@
 .DS_Store
 Thumbs.db
 
-# Lock and Binary files
+# Lock & Binary files
 *.lock
 *.bin
