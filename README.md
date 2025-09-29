@@ -13,7 +13,7 @@
 [![Releases][releases_img]][releases_url]
 [![License][repo_license_img]][repo_license_url]
 
-<a href="https://papermc.io/" target="_blank" title="Plugin Preview"><img width="95%" alt="plugin banner" src="https://cdn.modrinth.com/data/cached_images/95be6fc1b4fbf85158bc2c60d35f8abd1a14c5d7_0.webp"></a>
+<a href="https://cdn.modrinth.com/data/cached_images/95be6fc1b4fbf85158bc2c60d35f8abd1a14c5d7_0.webp" target="_blank" title="Damage Indicators Preview"><img width="95%" alt="plugin banner" src="https://cdn.modrinth.com/data/cached_images/95be6fc1b4fbf85158bc2c60d35f8abd1a14c5d7_0.webp"></a>
 
 </div>
 
