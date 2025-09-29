@@ -4,9 +4,11 @@
 
 # Logs
 *.log
-*.lock
-*.bin
 
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Lock and Binary files
+*.lock
+*.bin
