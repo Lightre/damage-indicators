@@ -4,6 +4,8 @@
 
 # Logs
 *.log
+*.lock
+*.bin
 
 # OS generated files
 .DS_Store
