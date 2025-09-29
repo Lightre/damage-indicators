@@ -45,15 +45,12 @@ Customize the indicators via the config file:
 enabled: true
 
 # Text to appear at the beginning of the damage indicator.
-# You can use color codes with '&'. (default: '&c❤ ')
+# You can use color codes with '&' (default: '&c❤ ')
 indicator-prefix: '&c❤ '
 
-# Special prefix that pops up when a crit lands. (default: '&e✯ ')
-critical-indicator-prefix: '&e✯ '
-
 # Time the damage indicator stays on screen (in secs)
-# You have to use decimal (double) values (default: 2.0)
-indicator-duration-seconds: 2.0
+# You have to use decimal (double) values (default: 1.5)
+indicator-duration-seconds: 1.5
 
 # World Blacklist
 # List the names of the worlds where you want to disable damage indicators.
